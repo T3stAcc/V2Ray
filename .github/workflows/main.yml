@@ -9,14 +9,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
       - run: pip install -r Files/requirements.txt
       - run: python Files/app.py && python Files/sort.py
-      - uses: EndBug/add-and-commit@v10
+      - uses: EndBug/add-and-commit@v9
         with:
           author_name: T3stAcc
           message: Updated!
