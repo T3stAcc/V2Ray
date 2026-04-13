@@ -28,12 +28,14 @@ def get_max_pages(base_url):
         soup = BeautifulSoup(response.text, "html.parser")
         pagination = soup.find("ul", class_="pagination justify-content-center")
         if pagination:
+            page_links = pagination.find_all("a", class_="page-link")
             page_numbers = []
-            for link in pagination.find_all("a", class_="page-link"):
+            for link in page_links:
                 href = link.get("href", "")
                 if href.startswith("?page="):
                     try:
-                        page_numbers.append(int(href.split("=")[-1]))
+                        page_num = int(href.split("=")[-1])
+                        page_numbers.append(page_num)
                     except ValueError:
                         pass
             return max(page_numbers) if page_numbers else 1
@@ -67,10 +69,9 @@ def scrape_v2nodes_links(base_url):
             page_url = f"{base_url}?page={page}"
             response = requests.get(page_url)
             soup = BeautifulSoup(response.text, "html.parser")
-            for server in soup.find_all("div", class_="col-md-12 servers"):
-                a_tag = server.find("a", href=True)
-                if a_tag:
-                    links.append(f"{base_url.rstrip('/')}{a_tag['href']}")
+            servers = soup.find_all("div", class_="col-md-12 servers")
+            server_urls = [f"{base_url}/servers/{server.get('data-id')}/" for server in servers if server.get("data-id")]
+            links.extend(server_urls)
         except requests.RequestException:
             pass
     return links
