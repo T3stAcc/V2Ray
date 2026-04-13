@@ -1,4 +1,5 @@
 name: Update Configs
+permissions: write-all
 
 on:
   push:
@@ -9,16 +10,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
           python-version: '3.x'
-      - run: pip install -r Files/requirements.txt
-      - run: python Files/app.py && python Files/sort.py
+      - run: cd Files && pip install -r requirements.txt
+      - run: cd Files && python app.py
+      - run: cd Files && python sort.py
       - uses: EndBug/add-and-commit@v10
         with:
           author_name: T3stAcc
           message: Updated!
+          add: .
+          push: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
