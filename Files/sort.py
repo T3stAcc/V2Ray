@@ -15,7 +15,7 @@ for file in files.values():
 
 configs = {'vmess': '', 'vless': '', 'trojan': '', 'ss': ''}
 
-response = requests.get("https://raw.githubusercontent.com/T3stAcc/v2ray/main/All_Configs_Sub.txt").text
+response = requests.get("https://raw.githubusercontent.com/T3stAcc/V2Ray/main/All_Configs_Sub.txt").text
 for config in response.splitlines():
     if config.strip() and not config.startswith('#'):
         for protocol in configs:
