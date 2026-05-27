@@ -100,7 +100,7 @@ def filter_for_protocols(data, protocols):
     filtered_data = []
     for line in data:
         for config_line in (line.splitlines() if "\n" in line else [line]):
-            if any(protocol in config_line for protocol in protocols):
+            if any(config_line.startswith(f"{protocol}://") for protocol in protocols):
                 filtered_data.append(config_line)
     return filtered_data
 
@@ -112,7 +112,7 @@ def ensure_directories_exist():
 
 def main():
     output_folder = ensure_directories_exist()
-    protocols = ["vmess", "vless", "trojan", "ss"]
+    protocols = ["vmess", "vless", "trojan", "ss", "ssr"]
     links = [
         "https://shadowmere.xyz/api/b64sub/",
         "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_BASE64.txt",
